@@ -53,5 +53,6 @@ Thumbs.db
 *.swo
 
 # Project & App-specific storage/artifacts
-storage/
+/apps/api/storage/
+/apps/api/storage_test/
 apps/api/src/generated/
