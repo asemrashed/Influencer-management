@@ -1,21 +1,24 @@
 ---
 name: ui-component-library
-description: Use when organizing shared UI in /packages/ui or deciding component structure and layering.
+description: Use when organizing shared UI in packages/ui, adding a primitive/composite, or deciding component structure, layering, props and tests.
 ---
 
-# UI Component Library Organization
+# UI Component Library (`packages/ui`)
 
-## Three tiers
-1. **Primitives** — shadcn base components. Never modified, never forked.
-2. **Composites** — generic, domain-agnostic building blocks made from primitives (DataTable, FormModal, StatCard). Live in `/packages/ui`.
-3. **Feature components** — specific to one app/feature, built from composites. Live under `/apps/*`, promoted to `/packages/ui` once a second consumer needs them (see `reusable-components`).
+## Tiers
+1. **Primitives** — shadcn/Radix components copied into `packages/ui/src/primitives`. Style changes happen via tokens or `cva` variants, never by forking per feature.
+2. **Composites** — domain-agnostic blocks built from primitives (DataTable, FilterBar, FormModal, ConfirmDialog, StatCard, PageHeader, states). Live in `packages/ui`.
+3. **Feature components** — in `apps/web/src/features/<domain>/components`; built from tiers 1–2; promoted when a second feature needs them (`reusable-components`).
 
-## Role-based conditional rendering (canonical pattern)
-❌ NEVER: separate components per role (`AdminStudentTable`, `TeacherStudentTable`).
-✅ ALWAYS: one component + a `role`/`permissions` prop + `<RoleGate allow={[...]}>` around role-gated actions + field-level `canEdit` checks for inputs.
+## Package contract
+- Pure presentational: no data fetching, no `next/*` data APIs, no app imports, no global stores; React 19 + Tailwind tokens only. Export from `src/index.ts`; one folder per component: `Component.tsx`, `Component.test.tsx`, optional `Component.stories`.
+- Props typed, minimal, documented with TSDoc on non-obvious ones. Controlled where state matters (table sort/page come in as props + callbacks).
+- Accessible by default (labels, roles, focus); test states with RTL.
+- Consumed through `transpilePackages: ['@platform/ui']`. No CSS-in-JS; Tailwind classes use semantic tokens (`bg-surface`, `text-muted`, `border-border`, `ring-ring`), never raw palette or hex.
+- Every export has a row in `component-registry` (guard checks).
 
-## Data & state components
-- Lists/tables → the shared `DataTable`, not a bespoke `<table>`.
-- KPIs → the shared `StatCard`.
-- Modals → `FormModal` / `ConfirmDialog`, not ad-hoc `Dialog` usage per feature.
-- Loading → `LoadingSkeleton`. Empty → `EmptyState`. Error → `ErrorState`. Every list/detail view handles all three states, not just the happy path.
+## Required composites (baseline)
+DataTable (server pagination, sorting, loading/empty/error, row actions, selection, column visibility), FilterBar, PageHeader, StatCard, ChartCard, FormModal, ConfirmDialog, FileUploader, SafeHtml, Money, DateTime, StatusBadge, SourceTag, UserAvatar, Pagination (cursor stack UI), EmptyState, ErrorState, PermissionDeniedState, ModuleOffState, FeatureOffState, LoadingSkeleton, Toaster.
+
+## Role-based rendering
+One component + `<Can permission="…">` around gated actions + `disabled` for read-only fields. Never per-role copies. `Can` lives in `apps/web` (needs session), `packages/ui` receives `canEdit`/`actions` as props.

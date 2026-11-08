@@ -6,7 +6,7 @@ description: Use when unsure about folder structure, file naming, or import orde
 # Project Conventions
 
 ## Folders
-/apps/api, /packages/shared-types, /packages/config, /packages/api-client, /tools/deploy, /clients/<name> (monorepo mode; a UI, when built, is a separate repo)
+/apps/api, /apps/web, /packages/ui, /packages/shared-types, /packages/config, /packages/api-client, /tools/deploy, /clients/<name> (monorepo mode; UI layout rules in `web-architecture`)
 (a project's `CLAUDE.md` may add more — keep the delta there, not here.)
 
 ## Naming

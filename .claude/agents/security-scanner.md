@@ -16,5 +16,6 @@ Read the `security` skill first, then check:
 - Outdated dependencies with known CVEs (`npm audit` or equivalent).
 - Sensitive data (tokens, passwords) logged in plaintext.
 - Secrets in any client-exposed var or in the OpenAPI spec/`api-client`; wildcard CORS with credentials; unverified payment/webhook callbacks; upload path/type trust; feature flags enforced only in a UI.
+- Frontend (apps/web, packages/ui): `dangerouslySetInnerHTML` outside `SafeHtml`; unsafe `href`/redirect (`next=`) handling; secrets in `NEXT_PUBLIC_*`; auth data in localStorage/sessionStorage; missing/weak CSP and security headers in `proxy.ts`; per-user data cached by Next `fetch`/Server Components; third-party scripts without CSP entry; PII in logs or URLs; raw `fetch` outside `lib/api`. See `web-security`.
 
 Output: a severity-ranked list (Critical / High / Medium / Low), each with file:line and the specific risk. No fixes — flag only.

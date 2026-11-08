@@ -1,0 +1,14 @@
+{
+  "name": "example",
+  "brand": {
+    "primary": "oklch(0.48 0.095 55)",
+    "accent": "oklch(0.91 0.035 70)",
+    "surface": "oklch(0.995 0.004 75)",
+    "background": "oklch(0.985 0.008 75)"
+  },
+  "radius": "0.75rem",
+  "fontHeading": "Inter, sans-serif",
+  "fontBody": "Inter, sans-serif",
+  "logo": "/logo.svg",
+  "favicon": "/favicon.ico"
+}

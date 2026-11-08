@@ -23,7 +23,9 @@
     "dev": "npm run build && npm run dev -w @platform/api",
     "client:generate": "npm run build && npm run openapi -w @platform/api && npm run build",
     "client:check": "npm run client:generate && git diff --exit-code -- apps/api/openapi.json packages/api-client/src/schema.ts",
-    "deploy": "tsx tools/deploy/deploy.ts"
+    "deploy": "tsx tools/deploy/deploy.ts",
+    "ui:guard": "node scripts/ui-guard.mjs",
+    "test:ui-guard": "node --test scripts/ui-guard.test.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",

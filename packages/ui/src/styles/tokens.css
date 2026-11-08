@@ -1,0 +1,113 @@
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: 9999px;
+
+  --font-sans: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  --font-heading: var(--font-heading, var(--font-sans));
+}
+
+:root {
+  /* Base Light Theme - Light Brown / Warm Terracotta / Sand Palette */
+  --background: oklch(0.985 0.008 75);
+  --foreground: oklch(0.22 0.035 55);
+  --surface: oklch(0.995 0.004 75);
+  --surface-muted: oklch(0.95 0.018 75);
+  --border: oklch(0.90 0.018 75);
+  --ring: oklch(0.55 0.09 55);
+
+  /* Primary Brand: Refined warm chestnut / warm brown */
+  --primary: oklch(0.48 0.095 55);
+  --primary-foreground: oklch(0.99 0.005 75);
+
+  /* Secondary: Soft warm sand / latte */
+  --secondary: oklch(0.93 0.025 75);
+  --secondary-foreground: oklch(0.25 0.035 55);
+
+  /* Accent: Warm toasted almond / caramel */
+  --accent: oklch(0.91 0.035 70);
+  --accent-foreground: oklch(0.25 0.04 55);
+
+  --muted: oklch(0.94 0.015 75);
+  --muted-foreground: oklch(0.50 0.025 60);
+
+  /* Status Colors */
+  --success: oklch(0.55 0.12 145);
+  --success-foreground: oklch(0.99 0.005 75);
+  --warning: oklch(0.68 0.14 75);
+  --warning-foreground: oklch(0.20 0.03 55);
+  --danger: oklch(0.52 0.18 28);
+  --danger-foreground: oklch(0.99 0.005 75);
+  --info: oklch(0.55 0.12 240);
+  --info-foreground: oklch(0.99 0.005 75);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+.dark {
+  /* Base Dark Theme - Deep Roasted Espresso / Warm Charcoal */
+  --background: oklch(0.16 0.015 55);
+  --foreground: oklch(0.95 0.012 75);
+  --surface: oklch(0.20 0.018 55);
+  --surface-muted: oklch(0.24 0.02 55);
+  --border: oklch(0.30 0.02 55);
+  --ring: oklch(0.65 0.09 55);
+
+  --primary: oklch(0.68 0.09 60);
+  --primary-foreground: oklch(0.16 0.015 55);
+
+  --secondary: oklch(0.26 0.02 55);
+  --secondary-foreground: oklch(0.95 0.012 75);
+
+  --accent: oklch(0.29 0.025 60);
+  --accent-foreground: oklch(0.95 0.012 75);
+
+  --muted: oklch(0.25 0.018 55);
+  --muted-foreground: oklch(0.70 0.015 75);
+
+  --success: oklch(0.62 0.13 145);
+  --success-foreground: oklch(0.16 0.015 55);
+  --warning: oklch(0.75 0.14 75);
+  --warning-foreground: oklch(0.16 0.015 55);
+  --danger: oklch(0.60 0.18 28);
+  --danger-foreground: oklch(0.99 0.005 75);
+  --info: oklch(0.65 0.12 240);
+  --info-foreground: oklch(0.16 0.015 55);
+}
+

@@ -5,6 +5,8 @@ description: Use when adding list endpoints, queries, indexes, heavy pages, or i
 
 # Performance Rules
 
+Frontend loading, bundle and rendering rules: `web-performance`.
+
 ## Database
 - Index every FK, filter column and sort column used by a list/search query; composite index order = equality columns first, then range/sort.
 - No N+1: load relations with `include`/joins or batch by IDs. Check the query count of any new list endpoint.

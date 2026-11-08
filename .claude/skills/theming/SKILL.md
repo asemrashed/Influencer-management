@@ -1,26 +1,23 @@
 ---
 name: theming
-description: Use AFTER release 1 when building the 10-15 UI designs: design tokens, layout shells, section variants, theme catalog. Also read when writing any component, to keep it theme-neutral.
+description: Use when writing any component styling, changing colors/typography/spacing, adding dark mode, or applying a client's brand. Token system for the single app (no theme catalog).
 ---
 
-# Theming (10–15 UI designs, built after the release 1 pilot)
+# Theming — tokens, not themes
 
-Designs are not started until the platform is stable. Until then, the only rule that applies is: components stay theme-neutral.
+One app, one design system. A client's look = a small brand file. (The 10–15 alternative designs and the landing page are out of scope.)
 
-## Approach: one web app, themes as packages
-- `packages/themes/<theme-name>/`: design tokens (color, type, spacing, radius), a layout shell, public-site section variants (hero, gallery, media kit, shop), and optional component overrides from a fixed list.
-- A client's theme is chosen in its config and applied at build time. All themes use the same `shared-types` contracts and the same API, so a design never needs backend changes.
-- If some designs truly need a different page structure, add a small number of layout shells; many token themes can share one shell.
+## Tokens
+- Defined once in `packages/ui/src/styles/tokens.css` using Tailwind 4 `@theme` + CSS variables. Semantic names: `background, foreground, surface, surface-muted, border, ring, primary, primary-foreground, secondary, accent, muted, muted-foreground, success, warning, danger, info` (+ `-foreground` pairs), `radius-sm/md/lg`, `font-sans/heading`, spacing scale, shadows.
+- Light and dark values per token (`:root` / `.dark`); `next-themes` toggles the class (pass the CSP nonce).
+- Components use only semantic utilities. FORBIDDEN outside `tokens.css`: hex/rgb/hsl/oklch literals, raw palette classes (`bg-blue-500`), arbitrary values (`w-[13px]`, `text-[#fff]`), inline `style` colors.
 
-## Rules
-- Components read tokens only: no hardcoded colors, fonts, spacing or radius anywhere in `packages/ui` or the apps.
-- Never fork a component per theme; parameterize it or use a slot or override from the fixed list.
-- The admin area stays largely shared; most visual difference lives in the public site and the shop.
-- Every theme supports loading, empty, error and permission-denied states, desktop and mobile layouts, and meets contrast requirements.
+## Per-client brand
+`clients/<name>/theme.json`: `{ brand: {primary, accent}, radius, fontHeading, fontBody, logo, favicon, name }`. A build step (`scripts/build-theme`, W0) generates `theme.generated.css` overriding token variables; it derives foreground colors, and FAILS the build if any text/background pair is below WCAG AA (4.5:1 normal, 3:1 large/UI). Fonts via `next/font` only. Logo/images via `next/image`.
+- Clients may change tokens only. Layout/component changes → core feature behind a toggle, or `clients/<name>/` extension with approval.
 
-## Maintenance
-- A theme catalog page renders every theme against the same sample data, with screenshot and accessibility checks in CI, so a core change that breaks one theme is caught before release.
-- A theme never touches client data or logic. Client-specific UI changes go in `clients/<name>/` (see `client-deploy`).
+## States & density
+Hover/focus/disabled/error states are tokens too. Respect `prefers-color-scheme` first, user choice stored in localStorage (try/catch). Respect `prefers-reduced-motion`.
 
-## Landing page
-Separate marketing app in its own repository and deployment (own `CLAUDE.md`), with no shared runtime and no client data. It shows the design catalog with real live-demo URLs (undeployed themes are labelled preview or coming soon, never given invented URLs), plus theme admin and an inquiry form. Build it after the designs exist.
+## Review checklist
+No literals; dark mode checked; contrast script green; no component takes a color prop except through a `tone` enum mapped to tokens.

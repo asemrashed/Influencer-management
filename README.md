@@ -1,12 +1,14 @@
-# Influencer Platform: Backend
+# Influencer Platform
 
-One complete, UI-free backend per influencer. Each client gets a copy of this repo at a release tag, its own database and domain, and its own separate UI built on the generated typed client. Not SaaS, not multi-tenant: there is no tenant column anywhere.
+One application per influencer: a finished backend (`apps/api`) plus the web UI (`apps/web`, `packages/ui`, planned in `FRONTEND_PLAN.md`; not built yet). Each client gets a copy of this repo at a release tag, with its own database, domain and brand file. Not SaaS, not multi-tenant: there is no tenant column anywhere.
 
 ```
 apps/api               Express 5 + Prisma 7 + PostgreSQL API (the product)
-packages/shared-types  Zod contracts shared by the API and every UI (pure types, no secrets)
+packages/shared-types  Zod contracts shared by the API and the UI (pure types, no secrets)
 packages/config        env schema (fail-fast) and client-config schema
 packages/api-client    typed client, GENERATED from the API's OpenAPI spec
+apps/web               (planned, W0) Next.js admin + public site
+packages/ui            (planned, W0) shared presentational components
 tools/deploy           per-client deploy script (dry run by default)
 clients/<name>/        per-client config and backend extensions
 .claude/, *.md         project rules and plan (start with CLAUDE.md, MASTER_PLAN.md)

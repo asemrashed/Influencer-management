@@ -1,6 +1,6 @@
 ---
 name: pwa-standards
-description: Use ONLY when the project requires an installable/offline app (PWA, service worker, Workbox).
+description: Use ONLY if a PWA requirement is explicitly approved (currently OUT OF SCOPE; do not build). Installable/offline mechanics for apps/web.
 ---
 
 # PWA Standards

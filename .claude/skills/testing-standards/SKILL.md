@@ -29,4 +29,4 @@ description: Use when writing or planning tests: scope, mocking providers, autho
 ## Backend-first: headless flow tests
 - Each module ships one e2e flow script (Vitest + supertest or an HTTP client against a test DB) that walks its main user journey through the real API using the generated `api-client`: sign in, create, transition, forbidden attempt, invalid input. This is the stand-in for a UI until one exists.
 - The same scripts run against staging after deploy as the smoke test.
-- Skip component-test targets here; they belong to UI repos.
+- Component and e2e tests for `apps/web` / `packages/ui` follow `web-testing`.

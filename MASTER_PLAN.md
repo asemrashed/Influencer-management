@@ -1,9 +1,9 @@
 # MASTER PLAN — Influencer Management Platform (Backend First)
 > Current: Release 1 reviewed and fixed (see docs/REVIEW_FIXES.md). Open items are listed there.
-> Next: Deployment & Pilot Handover (see "After the backend")
+> Next: Deployment & Pilot Handover (see "After the backend"). UI work: see `FRONTEND_PLAN.md` (pointer lines at its top).
 > All phases finished, tested, and documented. Read ONLY the current phase.
 
-Scope: ONE complete backend for ONE influencer. No UI is built in this repo. When the backend is done it is copied per influencer, and each client gets its own UI in a separate repo (see "After the backend").
+Scope: ONE complete backend for ONE influencer. The backend phases below are done. The UI is part of this same repo and is planned in `FRONTEND_PLAN.md` (read that for any UI work; this file stays backend-only).
 Release 1 = phases 1–8: a finished, tested, documented API deployed on one staging VPS.
 
 ## Definition of done (every phase)
@@ -84,8 +84,8 @@ Release 1 = phases 1–8: a finished, tested, documented API deployed on one sta
 
 ## After the backend (not started until phase 8 passes)
 - New influencer = copy the tagged backend, add `clients/<name>/client.config.*`, fresh database and secrets, deploy (see `client-deploy`).
-- Each client's UI is its own repo, built on `packages/api-client`, moved in with the deferred UI skills from `.claude/_deferred/`. First UI doubles as the pilot: run it with the first influencer for the agreed trial period.
-- Landing page and theme showcase: its own repo, built only after at least one UI exists. Not planned here.
+- The UI (`apps/web` + `packages/ui`) is built in this repo per `FRONTEND_PLAN.md`; a client gets it with the same tag plus `clients/<name>/theme.json`. The first deployment doubles as the pilot for the agreed trial period.
+- No landing page and no alternative theme catalog are planned.
 
 ## Later enhancements (on request)
-- Online payment gateway (once chosen) · SMS/WhatsApp · brand/PR portal · loyalty and rewards · digital products · more platforms · PWA (UI repo) · other languages
+- Online payment gateway (once chosen) · SMS/WhatsApp · brand/PR portal · loyalty and rewards · digital products · more platforms · PWA · other languages

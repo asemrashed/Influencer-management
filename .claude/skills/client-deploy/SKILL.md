@@ -8,7 +8,7 @@ description: Use when setting up a client deployment, per-client config, release
 Each client runs a tagged release of the core on its own Hostinger VPS, with its own domain, env, database, storage and secrets. Nothing runs shared between clients.
 
 ## Per-client config
-- One config file per client (`clients/<name>/client.config.*`, no secrets in it): domain, API release tag, enabled modules, providers chosen, allowed UI origins (CORS), backup target, and a pointer to the client's UI repo and tag. The deploy script reads it and can only touch that client.
+- One config file per client (`clients/<name>/client.config.*`, no secrets in it): domain, API release tag, enabled modules, providers chosen, allowed UI origins (CORS), backup target, and the web build (same repo and tag), brand file `clients/<name>/theme.json`. The deploy script reads it and can only touch that client.
 - Secrets live in that client's server env or the host's secret store, never in the repo.
 
 ## Releases
@@ -42,5 +42,5 @@ Domain and DNS, VPS account, database, storage, email sender domain, social deve
 ## New influencer from the finished backend
 1. Copy or fork the core at a release tag into the client's own repo/folder. Create `clients/<name>/client.config.*` (domain, modules, providers, allowed origins). No tenant column, no shared service.
 2. Fresh database, own env and secrets, own storage. Run migrations, then the REQUIRED seed only (roles, permissions, Super Admin invite). Never run the demo seed in production.
-3. The client's UI is a separate repo built on `packages/api-client` at that API tag. UI and API deploy and roll back independently.
+3. The web app (`apps/web`) lives in this repo and is built on `packages/api-client` at the same tag, served at `app.<domain>` (API at `api.<domain>`). UI and API are separate processes and roll back independently; deploy tooling for the web build is W9 in `FRONTEND_PLAN.md`.
 4. Serve UI and API under the same registrable domain (e.g. `app.client.com` and `api.client.com`) so SameSite cookie sessions work; list the UI origin in `CORS_ORIGINS`. Anything else needs an explicit security decision.

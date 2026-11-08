@@ -8,7 +8,7 @@ description: Use when deciding module boundaries, monorepo layout, where code li
 ## Layout mode (choose per project, record in `CLAUDE.md`)
 - **monorepo** — when there are 2+ deployable apps (e.g. web + api) or code shared across apps. Modular: `/apps/*` (deployable), `/packages/*` (shared, not deployable alone).
 - **single-app** — one deployable (e.g. a small site, or Next.js alone with route handlers). Mapping: `/packages/ui` → `src/components/ui`, `/packages/shared-types` → `src/shared`, `/packages/config` → `src/config`. Same one-way dependency rule applies between folders.
-- Backend-first projects: the monorepo holds `apps/api` plus packages; UIs live in separate repos and consume `packages/api-client`.
+- Backend-first projects: the monorepo holds `apps/api` plus packages; the UI lives in the same repo (`apps/web` + `packages/ui`, see `web-architecture` and `FRONTEND_PLAN.md`) and consumes `packages/api-client`.
 - Start single-app if unsure; split into a monorepo only when a second app or consumer appears.
 
 ## Monorepo rules

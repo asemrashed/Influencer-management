@@ -17,6 +17,8 @@ await bootstrap(c);
 
 const PASSWORD = 'Demo-Password-123!';
 const passwordHash = await hashPassword(PASSWORD);
+const USER_PASSWORD = 'Asdfghjk';
+const userPasswordHash = await hashPassword(USER_PASSWORD);
 const roles = new Map((await c.db.role.findMany({ where: { key: { not: null } } })).map((r) => [r.key as string, r]));
 
 const inviter = await c.db.role.upsert({
@@ -32,16 +34,28 @@ await c.db.rolePermission.upsert({
 });
 
 const demo = [
-  { email: 'owner@demo.test', name: 'Demo Owner', role: roles.get('super_admin')! },
-  { email: 'admin@demo.test', name: 'Demo Admin', role: roles.get('admin')! },
-  { email: 'manager@demo.test', name: 'Demo Manager', role: roles.get('manager')! },
-  { email: 'inviter@demo.test', name: 'Demo Inviter', role: inviter },
+  { email: 'owner@demo.test', name: 'Demo Owner', role: roles.get('super_admin')!, hash: passwordHash },
+  { email: 'admin@demo.test', name: 'Demo Admin', role: roles.get('admin')!, hash: passwordHash },
+  { email: 'manager@demo.test', name: 'Demo Manager', role: roles.get('manager')!, hash: passwordHash },
+  { email: 'inviter@demo.test', name: 'Demo Inviter', role: inviter, hash: passwordHash },
+  // Requested role users with password 'Asdfghjk'
+  { email: 'superadmin@gmail.com', name: 'Super Admin', role: roles.get('super_admin')!, hash: userPasswordHash },
+  { email: 'admin@gmail.com', name: 'Admin User', role: roles.get('admin')!, hash: userPasswordHash },
+  { email: 'manager@gmail.com', name: 'Manager User', role: roles.get('manager')!, hash: userPasswordHash },
 ];
 for (const u of demo) {
-  const user = await c.db.user.upsert({ where: { email: u.email }, create: { email: u.email, name: u.name, passwordHash }, update: {} });
-  await c.db.userRole.upsert({ where: { userId_roleId: { userId: user.id, roleId: u.role.id } }, create: { userId: user.id, roleId: u.role.id }, update: {} });
+  const user = await c.db.user.upsert({
+    where: { email: u.email },
+    create: { email: u.email, name: u.name, passwordHash: u.hash },
+    update: { passwordHash: u.hash },
+  });
+  await c.db.userRole.upsert({
+    where: { userId_roleId: { userId: user.id, roleId: u.role.id } },
+    create: { userId: user.id, roleId: u.role.id },
+    update: {},
+  });
 }
-console.log('✔ Demo users ready (password for all: %s)', PASSWORD);
+console.log('✔ Demo users ready');
 for (const u of demo) console.log(`  ${u.email.padEnd(20)} ${u.role.name}`);
 console.log('  Owner and Admin must set up two-factor on first sign-in.');
 await c.db.$disconnect();

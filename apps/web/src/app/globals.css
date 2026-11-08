@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "@platform/ui/styles/tokens.css";
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+

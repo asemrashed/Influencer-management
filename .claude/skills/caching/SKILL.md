@@ -1,11 +1,11 @@
 ---
 name: caching
-description: Use when adding Redis or server caching, cache invalidation, or HTTP cache headers. (Client-side TanStack Query keys belong to the UI repos.)
+description: Use when adding Redis or server caching, cache invalidation, or HTTP cache headers. Client-side (TanStack Query / Next) rules are in `web-caching`.
 ---
 
 # Caching Rules
 
-## Client (TanStack Query) — applies in UI repos only, not in this backend repo
+## Client (TanStack Query) — details in `web-caching` and `web-data-fetching`
 - TanStack Query is the single source of truth for server data on the client — no parallel local copies in component state.
 - Query key convention (pick one, document it in the project's `CLAUDE.md`, then never deviate):
   `[domain, resource, id?, filters?]` — e.g. `['billing', 'invoices', invoiceId]`, `['billing', 'invoices', 'list', {status}]`.

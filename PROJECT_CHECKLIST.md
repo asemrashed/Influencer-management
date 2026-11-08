@@ -44,3 +44,25 @@ Run at the end of each phase. Tick ONLY what was verified (command run, test pas
 - [ ] `/health` and `/ready` respond; rollback path noted.
 - [ ] Release tagged; changelog written; client's running tag recorded.
 - [ ] Backup restore verified at least once for this client.
+
+## Frontend (run for any `apps/web` / `packages/ui` change; tick only what was verified)
+**Security**
+- [ ] No `dangerouslySetInnerHTML` outside `SafeHtml`; no raw `fetch(` outside `lib/api`; no `process.env` outside `lib/env.ts`; only `NEXT_PUBLIC_API_URL`/`NEXT_PUBLIC_SITE_URL` are public.
+- [ ] No auth data/tokens in localStorage, sessionStorage, IndexedDB or URLs; CSRF token memory-only; `next=` redirects allow-listed relative paths.
+- [ ] CSP (nonce) and security headers present; no third-party scripts without an ADR row.
+- [ ] Public forms: honeypot `website_hp`, `RATE_LIMITED` handled; checkout reuses its idempotency key; uploads capped (8 MB raw) with MIME allowlist.
+- [ ] Permission checks in the UI are UX only; the denied state appears on `FORBIDDEN`.
+- [ ] `npm audit --omit=dev` clean (high+).
+**Data & caching**
+- [ ] Queries via feature `queryOptions` factories; mutations list explicit invalidations; `signal` passed; staleTime tier chosen.
+- [ ] Cache cleared on logout/401/user change; authenticated cache never persisted; no per-user data in Server Components/Next fetch cache.
+- [ ] Lists use server cursor pagination + URL state; no client-side filtering of full lists; >100 rows virtualized.
+**Reuse & design**
+- [ ] `ui-architect` consulted; no duplicate component/card/button/status map; `component-registry` updated.
+- [ ] No hex/arbitrary values; dark mode and contrast checked; `npm run ui:guard` green.
+**UX & quality**
+- [ ] Loading, empty, error, permission-denied, module-off and capability-off states handled (no fake success).
+- [ ] `SourceTag` on manual/synced figures; money via `Money`; AI items show `ApprovalBadge`.
+- [ ] axe: 0 violations; keyboard path works; mobile (360 px) checked.
+- [ ] LCP/INP/CLS and bundle size within budget (W9 numbers); heavy libs lazy-loaded.
+- [ ] Component tests + Playwright flow pass; `ui-reviewer` run.

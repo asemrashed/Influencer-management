@@ -6,6 +6,7 @@ description: Use when working on auth, sessions, headers, CSRF, sanitization, se
 # Security Rules
 
 ## Input & Output
+- Frontend-specific rules (CSP, SafeHtml, session, redirects, env): `web-security` and `web-auth-session`.
 - Zod validates every input, client AND server (shared schema — never re-validate with different rules in two places).
 - DOMPurify sanitizes user-generated HTML wherever accepted or rendered (before DB write and before render). Plain text fields are escaped on output, not run through the HTML pipeline.
 - Never trust a client-supplied file's declared mime type — verify server-side.

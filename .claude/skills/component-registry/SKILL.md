@@ -1,47 +1,52 @@
 ---
 name: component-registry
-description: Use BEFORE creating any UI component, to check what already exists. Index of primitives and app components for the Influencer Management Platform.
+description: Use BEFORE creating any UI component, to check what already exists. Index of primitives and shared components in packages/ui and the feature components worth reusing.
 ---
 
-# Component Registry — Influencer Management Platform
+# Component Registry
 
-## 🧱 shadcn Primitives (NEVER recreate)
-Button, Input, Textarea, Select, Checkbox, Radio, Switch, Dialog, Sheet, Drawer,
-Table, Card, Badge, Tabs, Tooltip, Popover, Dropdown, Calendar, Form, Toast, Skeleton.
+Source of truth for "does this exist?". Add a row in the SAME change that adds an export to `packages/ui` (the guard fails otherwise). Status: `planned` until built in W0+, then `built`.
 
-## 🧩 Shared App Components (/packages/ui)
-| Component | Path | Used For |
-|-----------|------|----------|
-| DataTable | /packages/ui/data-table | ALL list/table views, pagination, sort, filters |
-| StatCard | /packages/ui/stat-card | Dashboard KPI cards |
-| PageHeader | /packages/ui/page-header | Title + breadcrumb + actions |
-| FilterBar | /packages/ui/filter-bar | Search + filters above tables |
-| FormModal | /packages/ui/form-modal | Any create/edit dialog |
-| ConfirmDialog | /packages/ui/confirm-dialog | Destructive actions |
-| EmptyState | /packages/ui/empty-state | No data UI |
-| ErrorState | /packages/ui/error-state | Error UI |
-| PermissionDeniedState | /packages/ui/permission-denied-state | 403 UI (required by the product scope) |
-| RoleGate | /packages/ui/role-gate | Permission-based conditional render (UX only) |
-| LoadingSkeleton | /packages/ui/loading-skeleton | Page/table skeletons |
-| Pagination | /packages/ui/pagination | Cursor + offset |
-| FileUploader | /packages/ui/file-uploader | Storage provider-agnostic (see `storage`) |
-| UserAvatar | /packages/ui/user-avatar | Any dashboard |
+## Primitives (shadcn in `packages/ui/src/primitives` — never recreate)
+Button, Input, Textarea, Select, Checkbox, RadioGroup, Switch, Label, Dialog, Sheet, Drawer, Table, Card, Badge, Tabs, Tooltip, Popover, DropdownMenu, Calendar, Form, Toast/Sonner, Skeleton, Avatar, Separator, ScrollArea, Command.
 
-Every list and detail view handles loading, empty, error and permission-denied states, not just the happy path.
+## Shared composites
+| Component | Path (`packages/ui/src/…`) | Used for | Status |
+|-----------|------|----------|--------|
+| DataTable | data-table | every list: server paging, sort, states, row actions | planned |
+| Pagination | pagination | cursor-stack prev/next + page size | planned |
+| FilterBar | filter-bar | search + filters synced to URL | planned |
+| PageHeader | page-header | title, breadcrumb, actions | planned |
+| StatCard | stat-card | KPI tile (value, delta, SourceTag, loading) | planned |
+| ChartCard | chart-card | card wrapper + lazy chart slot | planned |
+| ListCard | list-card | short "recent items" lists on dashboards | planned |
+| FormModal | form-modal | any create/edit dialog | planned |
+| ConfirmDialog | confirm-dialog | destructive actions | planned |
+| FileUploader | file-uploader | uploads (size cap, MIME allowlist, progress); upload fn passed in | planned |
+| SafeHtml | safe-html | ONLY place HTML is injected (DOMPurify) | planned |
+| Money | money | integer minor units → localized currency | planned |
+| DateTime | date-time | formatted dates/relative time | planned |
+| StatusBadge | status-badge | all statuses via tone map | planned |
+| SourceTag | source-tag | `manual` vs `synced` | planned |
+| ApprovalBadge | approval-badge | AI drafts / awaiting human approval | planned |
+| ConnectionStatus | connection-status | social account state | planned |
+| UserAvatar | user-avatar | avatars/initials | planned |
+| EmptyState | empty-state | no data / no filter match | planned |
+| ErrorState | error-state | error + retry + requestId | planned |
+| PermissionDeniedState | permission-denied-state | 403 | planned |
+| ModuleOffState | module-off-state | module disabled | planned |
+| FeatureOffState | feature-off-state | `CAPABILITY_DISABLED` | planned |
+| LoadingSkeleton | loading-skeleton | page/table/card skeletons | planned |
+| CalendarView | calendar-view | content, events, meetings (lazy) | planned |
+| ThreadView | thread-view | inbox conversations | planned |
+| ProductCard / PriceTag | product-card | storefront (public) | planned |
 
-## 🧩 Project-Specific Components — add rows here as they are built
-Planned (create only when the phase needs them, check the shared set first):
-| Component | Path | Used For |
-|-----------|------|----------|
-| ApprovalBadge | /packages/ui/approval-badge | Marks AI drafts and items waiting for human approval (phases 2, 7) |
-| ConnectionStatus | /packages/ui/connection-status | Social account state: connected, stale, error, manual (phase 5) |
-| SourceTag | /packages/ui/source-tag | Shows `manual` vs `synced` on earnings and analytics figures (phases 5, 6) |
-| CalendarView | /packages/ui/calendar-view | Content, events and meetings calendars (phases 3–5) |
-| ThreadView | /packages/ui/thread-view | Inbox conversations (phase 2) |
+## App-level (not in `packages/ui`; need session or routing)
+`Can`/`useCan`, `SessionProvider`, `AppShell`, `Nav`, `NotificationBell`, `useCursorPagination`, `useUrlState` — in `apps/web/src/{providers,lib,components}`.
 
-## 📋 Rules
-- BEFORE creating ANY component → search this file first.
-- 80%+ similar to something listed → EXTEND with props, don't fork.
-- Permission differences → `RoleGate` or a prop — never a per-role duplicate (see `reusable-components`).
-- Components must be theme-neutral: colors, fonts, spacing and radius come from design tokens, never hardcoded (see `theming`).
-- New reusable component → add it to this table in the same PR that introduces it.
+## Rules
+- BEFORE creating ANY component, search this file, then ask `ui-architect`.
+- ≥80% similar → EXTEND with props; don't fork.
+- Permission/variant differences → props + `Can`, never per-role copies.
+- Colors/fonts/spacing from tokens only (`theming`).
+- Remove or mark `deprecated` rows when components are deleted.
