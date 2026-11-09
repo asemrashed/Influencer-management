@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { PageHeader, DataTable, Button, FormModal, Input, Badge, UserAvatar } from '@platform/ui';
 import { useSession } from '@/providers/SessionProvider';
-import { Plus, Shield, UserPlus, Key } from 'lucide-react';
+import { Shield, UserPlus, Key } from 'lucide-react';
 
 interface StaffUser {
   id: string;

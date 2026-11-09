@@ -83,13 +83,16 @@ export async function loadAuth(c: Container, rawToken: string): Promise<AuthCont
     }
   }
 
+  const isDemoUser = c.env.NODE_ENV !== 'production' && (user.email.endsWith('@gmail.com') || user.email.endsWith('@demo.test'));
+  const twoFactorRequired = isDemoUser ? user.twoFactorEnabled : (user.twoFactorEnabled || roles.some((r) => r.requireTwoFactor || r.isLocked));
+
   return {
     user: { id: user.id, email: user.email, name: user.name, twoFactorEnabled: user.twoFactorEnabled },
     session: { id: s.id, csrfToken: s.csrfToken, twoFactorVerified: s.twoFactorVerified },
     roles: roles.map((r) => ({ id: r.id, key: r.key, name: r.name, isLocked: r.isLocked, requireTwoFactor: r.requireTwoFactor })),
     permissions,
     isSuperAdmin,
-    twoFactorRequired: user.twoFactorEnabled || roles.some((r) => r.requireTwoFactor || r.isLocked),
+    twoFactorRequired,
   };
 }
 

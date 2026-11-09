@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Input, Card, CardHeader, CardTitle, CardDescription, CardContent } from '@platform/ui';
-import { api, ApiError } from '@/lib/api/index';
+import { api, type ApiError } from '@/lib/api/index';
 import { useQueryClient } from '@tanstack/react-query';
 import { ShieldCheck } from 'lucide-react';
 import Link from 'next/link';

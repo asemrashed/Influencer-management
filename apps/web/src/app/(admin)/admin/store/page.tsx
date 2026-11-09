@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { PageHeader, DataTable, Button, FormModal, Input, Badge, Money } from '@platform/ui';
 import { useSession } from '@/providers/SessionProvider';
-import { Plus, ShoppingBag, Package, Tag, ArrowUpRight } from 'lucide-react';
+import { Plus, Package } from 'lucide-react';
 
 interface ProductItem {
   id: string;

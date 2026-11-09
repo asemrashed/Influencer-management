@@ -11,8 +11,14 @@ export interface ModuleInfo {
 }
 
 export interface PermissionInfo {
-  key: string;
-  scope: 'all' | 'assigned' | 'own';
+  permission: string;
+  scope: 'ALL' | 'ASSIGNED' | 'OWN' | string;
+}
+
+export interface RoleInfo {
+  id: string;
+  key?: string | null;
+  name: string;
 }
 
 export interface UserSession {
@@ -20,13 +26,13 @@ export interface UserSession {
   email: string;
   name: string;
   avatarUrl?: string | null;
-  role: string;
+  twoFactorEnabled?: boolean;
 }
 
 export interface SessionContextType {
   status: 'loading' | 'anonymous' | '2fa' | 'authenticated';
   user: UserSession | null;
-  roles: string[];
+  roles: RoleInfo[];
   permissions: PermissionInfo[];
   modules: Record<string, boolean>;
   can: (permissionKey: string) => boolean;
@@ -76,13 +82,16 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     // Cast response safely from GET /api/v1/me
     const me = data as unknown as {
       user?: UserSession;
-      roles?: string[];
+      roles?: RoleInfo[];
       permissions?: PermissionInfo[];
       modules?: Array<{ key: string; enabled: boolean }>;
-      twoFactorRequired?: boolean;
+      session?: {
+        twoFactorVerified?: boolean;
+        twoFactorRequired?: boolean;
+      };
     };
 
-    if (me.twoFactorRequired) {
+    if (me.session?.twoFactorRequired && !me.session?.twoFactorVerified) {
       return {
         status: '2fa',
         user: me.user ?? null,
@@ -107,6 +116,9 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     }
 
     const perms = me.permissions ?? [];
+    const isSuperAdmin = (me.roles ?? []).some(
+      (r) => r.key === 'super_admin' || r.name.toLowerCase() === 'super admin'
+    );
 
     return {
       status: 'authenticated',
@@ -115,8 +127,8 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       permissions: perms,
       modules: modMap,
       can: (permKey: string) => {
-        if (me.roles?.includes('Super Admin')) return true;
-        return perms.some((p) => p.key === permKey);
+        if (isSuperAdmin) return true;
+        return perms.some((p) => p.permission === permKey);
       },
       isModuleEnabled: (modKey: string) => {
         return modMap[modKey] ?? true;
